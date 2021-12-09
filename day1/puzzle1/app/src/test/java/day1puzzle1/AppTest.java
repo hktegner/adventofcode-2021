@@ -10,15 +10,11 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AppTest {
 
@@ -37,42 +33,18 @@ class AppTest {
     @MethodSource("increasesTestData")
     void increases(String resourceName, int expectedIncreases) {
         var app = new App();
-        var file = writeResourceToFile(resourceName);
+        var file = AppUtil.writeResourceToFile(rootDir, resourceName);
         assertEquals(expectedIncreases, app.increases(file));
-    }
-
-    private Path writeResourceToFile(String resourceName) {
-        try {
-            var file = Path.of(rootDir.toString(), resourceName);
-            var resourceStream = getClass().getResourceAsStream(resourceName);
-            if (resourceStream == null) {
-                throw new IllegalStateException("Failed to read resource " + resourceName);
-            }
-            Files.write(file, resourceStream.readAllBytes());
-            return file;
-        } catch (IOException | NullPointerException e) {
-            throw new IllegalArgumentException("Failed to write resource to disk", e);
-        }
     }
 
     @BeforeAll
     static void setup() {
-        try {
-            rootDir = Files.createTempDirectory("aoc-2021-day1puzzle1");
-            System.out.printf("Created temporary directory: %s%n", rootDir);
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
+        rootDir = AppUtil.createTempDirectory();
     }
 
     @AfterAll
     static void tearDown() {
-        try {
-            Files.walk(rootDir, FileVisitOption.FOLLOW_LINKS)
-                            .forEach(p -> p.toFile().delete());
-        } catch (IOException e) {
-            throw new IllegalStateException("Failed to tidy up", e);
-        }
+        AppUtil.deleteDirectoryAndChildren(rootDir);
     }
 
 }

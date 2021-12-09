@@ -39,5 +39,14 @@ public class App {
         }
     }
 
+    public static void main(String[] args) {
+        var tmpDir = AppUtil.createTempDirectory();
+        try {
+            var inputFile = AppUtil.writeResourceToFile(tmpDir, "/input.txt");
+            System.out.printf("Increases = %s%n", new App().increases(inputFile));
+        } finally {
+            AppUtil.deleteDirectoryAndChildren(tmpDir);
+        }
+    }
 
 }
