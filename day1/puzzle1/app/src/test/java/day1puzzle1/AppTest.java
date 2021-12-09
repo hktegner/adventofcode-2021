@@ -10,6 +10,9 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
@@ -56,6 +59,7 @@ class AppTest {
     static void setup() {
         try {
             rootDir = Files.createTempDirectory("aoc-2021-day1puzzle1");
+            System.out.printf("Created temporary directory: %s%n", rootDir);
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
@@ -63,7 +67,12 @@ class AppTest {
 
     @AfterAll
     static void tearDown() {
-        assertTrue(rootDir.toFile().delete());
+        try {
+            Files.walk(rootDir, FileVisitOption.FOLLOW_LINKS)
+                            .forEach(p -> p.toFile().delete());
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to tidy up", e);
+        }
     }
 
 }
