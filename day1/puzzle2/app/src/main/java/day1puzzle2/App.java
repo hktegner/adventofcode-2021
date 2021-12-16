@@ -6,6 +6,7 @@ package day1puzzle2;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,17 +14,29 @@ public class App {
 
     public int increases(Path file) {
         var depths = readDepths(file);
-        return countDepthIncreases(depths);
+        return countDepthIncreases(depths, 3);
     }
 
-    private int countDepthIncreases(List<Integer> depths) {
-        var prevValue = -1;
+    private int countDepthIncreases(List<Integer> depths, int windowSize) {
+        var window = new LinkedList<Integer>();
+        var prevWindowValue = -1;
+        var newWindowValue = -1;
         var increases = 0;
         for (var depth : depths) {
-            if (prevValue != -1 && depth > prevValue) {
+            // feed/maintain the window
+            window.addFirst(depth);
+            if (window.size() < windowSize) {
+                continue;
+            }
+            if (window.size() > windowSize) {
+                window.removeLast();
+            }
+            // with a full window - calculate value and compare to previous
+            newWindowValue = window.stream().reduce(Integer::sum).orElse(0);
+            if (prevWindowValue != -1 && newWindowValue > prevWindowValue) {
                 increases++;
             }
-            prevValue = depth;
+            prevWindowValue = newWindowValue;
         }
         return increases;
     }
