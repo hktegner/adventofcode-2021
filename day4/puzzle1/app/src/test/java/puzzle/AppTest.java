@@ -15,8 +15,8 @@ class AppTest {
 
     public static Stream<Arguments> findLifeSupportRatingData() {
         return Stream.of(
-                Arguments.of("/test_input_all_zeroes_0_0.txt", 0, 0),
-                Arguments.of("/test_input_all_ones_7_7.txt", 7, 7),
+                Arguments.of("/test_input_board1_wins.txt", 0, 0),
+                Arguments.of("/test_input_no_win.txt", 7, 7),
                 Arguments.of("/test_input_puzzle_sample_23_10.txt", 23, 10)
         );
     }
