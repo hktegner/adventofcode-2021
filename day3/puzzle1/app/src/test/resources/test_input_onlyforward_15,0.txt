@@ -1,5 +1,0 @@
-forward 5
-forward 5
-forward 5
-down 20
-up 20
