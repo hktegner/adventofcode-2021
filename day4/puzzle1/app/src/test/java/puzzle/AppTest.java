@@ -13,26 +13,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AppTest {
 
-    public static Stream<Arguments> findLifeSupportRatingData() {
+    public static Stream<Arguments> playGameData() {
         return Stream.of(
-                Arguments.of("/test_input_board1_wins.txt", 0, 0),
-                Arguments.of("/test_input_no_win.txt", 7, 7),
-                Arguments.of("/test_input_puzzle_sample_23_10.txt", 23, 10)
+                Arguments.of("test_input_board1_wins_in_5_on_5.txt", 0, 5),
+                Arguments.of("test_input_no_win.txt", -1, Board.INVALID_NUMBER),
+                Arguments.of("test_input_puzzle_sample_23_10.txt", 2, 24)
         );
     }
 
     @ParameterizedTest
-    @MethodSource("findLifeSupportRatingData")
-    void findLifeSupportRating(
-            String resourceName,
-            int expectedO2GenRating,
-            int expectedCO2ScubRating) {
-
+    @MethodSource("playGameData")
+    void playGame(String resourceName, int expectedWinningBoard, int expectedLastNumber) {
         var app = new App();
-        var actualLifeSupportRating = app.findLifeSupportRating(resourceName);
-        assertEquals(expectedO2GenRating, actualLifeSupportRating.o2GenRating().value());
-        assertEquals(expectedCO2ScubRating, actualLifeSupportRating.co2ScrubRating().value());
-        assertEquals(expectedO2GenRating * expectedCO2ScubRating, actualLifeSupportRating.value());
+        var maybeWinningBoard = app.playGame(resourceName);
+
+        if (maybeWinningBoard.isPresent()) {
+            assertEquals(expectedWinningBoard, maybeWinningBoard.get().index());
+            assertEquals(expectedLastNumber, maybeWinningBoard.get().getLastMarked());
+        } else {
+            assertEquals(-1, expectedWinningBoard);
+        }
     }
 
 }

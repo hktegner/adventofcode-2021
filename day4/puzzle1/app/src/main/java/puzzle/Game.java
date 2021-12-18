@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -23,9 +24,10 @@ public class Game {
                 Arrays.stream(lines.remove(0).split(","))
                         .map(Integer::valueOf)
                         .collect(Collectors.toList());
-        ArrayList<Board> boards = new ArrayList<Board>();
+        ArrayList<Board> boards = new ArrayList<>();
+        int boardIndex = 0;
         while (lines.size() > 0) {
-            boards.add(Board.from(lines));
+            boards.add(Board.from(lines, boardIndex++));
         }
         return new Game(drawOrder, boards);
     }
@@ -46,4 +48,24 @@ public class Game {
         }
     }
 
+    /**
+     * Plays the game of Bingo, drawing numbers according to the draw order,
+     * until one board has a complete row or column.
+     * @return the winning board if there was a winner
+     */
+    public Optional<Board> play() {
+        boards.forEach(Board::reset);
+
+        for (var number : drawOrder) {
+            for (var board: boards) {
+                board.mark(number);
+                if (board.isAnyLineMarked()) {
+                    return Optional.of(board);
+                }
+            }
+        }
+
+        // Nobody one, all numbers played.
+        return Optional.empty();
+    }
 }
