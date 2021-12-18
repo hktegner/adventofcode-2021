@@ -43,39 +43,39 @@ class BitsTest {
     @Test
     void isZero() {
         var bits = Bits.valueOf("01010101");
-        assertTrue(bits.isZero(1));
-        assertTrue(bits.isZero(3));
-        assertTrue(bits.isZero(5));
-        assertTrue(bits.isZero(7));
-        assertFalse(bits.isZero(0));
-        assertFalse(bits.isZero(2));
-        assertFalse(bits.isZero(4));
-        assertFalse(bits.isZero(6));
+        assertTrue(bits.isZero(0));
+        assertTrue(bits.isZero(2));
+        assertTrue(bits.isZero(4));
+        assertTrue(bits.isZero(6));
+        assertFalse(bits.isZero(1));
+        assertFalse(bits.isZero(3));
+        assertFalse(bits.isZero(5));
+        assertFalse(bits.isZero(7));
     }
 
     @Test
     void isOne() {
         var bits = Bits.valueOf("01010101");
-        assertTrue(bits.isOne(0));
-        assertTrue(bits.isOne(2));
-        assertTrue(bits.isOne(4));
-        assertTrue(bits.isOne(6));
-        assertFalse(bits.isOne(1));
-        assertFalse(bits.isOne(3));
-        assertFalse(bits.isOne(5));
-        assertFalse(bits.isOne(7));
+        assertTrue(bits.isOne(1));
+        assertTrue(bits.isOne(3));
+        assertTrue(bits.isOne(5));
+        assertTrue(bits.isOne(7));
+        assertFalse(bits.isOne(0));
+        assertFalse(bits.isOne(2));
+        assertFalse(bits.isOne(4));
+        assertFalse(bits.isOne(6));
     }
 
     @Test
     void charAt() {
         var bits = Bits.valueOf("00001111");
-        assertEquals('1', bits.charAt(0));
-        assertEquals('1', bits.charAt(1));
-        assertEquals('1', bits.charAt(2));
-        assertEquals('1', bits.charAt(3));
-        assertEquals('0', bits.charAt(4));
-        assertEquals('0', bits.charAt(5));
-        assertEquals('0', bits.charAt(6));
-        assertEquals('0', bits.charAt(7));
+        assertEquals('0', bits.charAt(0));
+        assertEquals('0', bits.charAt(1));
+        assertEquals('0', bits.charAt(2));
+        assertEquals('0', bits.charAt(3));
+        assertEquals('1', bits.charAt(4));
+        assertEquals('1', bits.charAt(5));
+        assertEquals('1', bits.charAt(6));
+        assertEquals('1', bits.charAt(7));
     }
 }

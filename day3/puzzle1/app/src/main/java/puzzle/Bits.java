@@ -7,6 +7,7 @@ public class Bits {
 
     /**
      * Factory method.
+     *
      * @throws NumberFormatException if the bits does not represent a valid binary number
      */
     public static Bits valueOf(String bits) {
@@ -15,14 +16,11 @@ public class Bits {
 
     private final String bits;
 
-    private final int lastStringIndex;
-
     /**
      * @throws NumberFormatException if the bits is not a valid binary number
      */
     private Bits(String bits) {
         bitsToDecimal(bits);
-        lastStringIndex = bits.length() - 1;
         this.bits = bits;
     }
 
@@ -41,7 +39,7 @@ public class Bits {
     }
 
     public char charAt(int index) {
-        return bits.charAt(lastStringIndex - index);
+        return bits.charAt(index);
     }
 
     /**
@@ -70,7 +68,6 @@ public class Bits {
     public String toString() {
         return "Bits{" +
                 "bits='" + bits + '\'' +
-                ", lastStringIndex=" + lastStringIndex +
                 '}';
     }
 }

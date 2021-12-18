@@ -26,14 +26,14 @@ public class App {
         }
     }
 
-    public PowerConsumption findPowerConsumption(String resourceName) {
+    public LifeSupportRating findLifeSupportRating(String resourceName) {
         var tmpDir = AppUtil.createTempDirectory();
         try {
             var inputFile = AppUtil.writeResourceToFile(tmpDir, resourceName);
             var reportLines = readNumbers(inputFile);
-            var gamma = findGamma(reportLines);
-            var epsilon = findEpsilon(reportLines);
-            return new PowerConsumption(gamma, epsilon);
+            var o2GenRating = findO2GenRating(reportLines);
+            var co2ScrubRating = findCO2ScrubRating(reportLines);
+            return new LifeSupportRating(o2GenRating, co2ScrubRating);
         } finally {
             AppUtil.deleteDirectoryAndChildren(tmpDir);
         }
@@ -43,12 +43,18 @@ public class App {
      * Find the most frequently occurring bit in each position and
      * return those bits.
      */
-    private Bits findGamma(List<Bits> reportLines) {
+    private Bits findO2GenRating(List<Bits> reportLines) {
         int numberOfBits = reportLines.get(0).length();
-        StringBuilder chars = new StringBuilder();
-        IntStream.range(0, numberOfBits)
-                .forEachOrdered(i -> chars.insert(0, mostCommonChar(i, reportLines)));
-        return Bits.valueOf(chars.toString());
+        for (var index = 0; index < numberOfBits; index++) {
+            char mostCommonDigit = mostCommonChar(index, reportLines);
+            final int finalIndex = index;
+            reportLines =
+                    reportLines
+                            .stream()
+                            .filter(bits -> bits.charAt(finalIndex) == mostCommonDigit)
+                            .collect(Collectors.toList());
+        }
+        return reportLines.get(0);
     }
 
     private char mostCommonChar(int index, List<Bits> reportLines) {
@@ -56,12 +62,12 @@ public class App {
         var ones = counts.get('1');
         var zeroes = counts.get('0');
         if (ones == null) {
-            ones = 0L;
+            return '0';
         }
         if (zeroes == null) {
-            zeroes = 0L;
+            return '1';
         }
-        return zeroes >= ones ? '0' : '1';
+        return ones >= zeroes ? '1' : '0';
     }
 
     private char mostUncommonChar(int index, List<Bits> reportLines) {
@@ -69,10 +75,10 @@ public class App {
         var ones = counts.get('1');
         var zeroes = counts.get('0');
         if (ones == null) {
-            ones = 0L;
+            return '0';
         }
         if (zeroes == null) {
-            zeroes = 0L;
+            return '1';
         }
         return zeroes <= ones ? '0' : '1';
     }
@@ -88,16 +94,22 @@ public class App {
      * Find the least frequently occurring bit in each position and
      * return those bits.
      */
-    private Bits findEpsilon(List<Bits> reportLines) {
+    private Bits findCO2ScrubRating(List<Bits> reportLines) {
         int numberOfBits = reportLines.get(0).length();
-        StringBuilder chars = new StringBuilder();
-        IntStream.range(0, numberOfBits)
-                .forEachOrdered(i -> chars.insert(0, mostUncommonChar(i, reportLines)));
-        return Bits.valueOf(chars.toString());
+        for (var index = 0; index < numberOfBits; index++) {
+            char mostUncommonDigit = mostUncommonChar(index, reportLines);
+            final int finalIndex = index;
+            reportLines =
+                    reportLines
+                            .stream()
+                            .filter(bits -> bits.charAt(finalIndex) == mostUncommonDigit)
+                            .collect(Collectors.toList());
+        }
+        return reportLines.get(0);
     }
 
     public static void main(String[] args) {
-        PowerConsumption consumption = new App().findPowerConsumption("/input.txt");
+        LifeSupportRating consumption = new App().findLifeSupportRating("/input.txt");
         System.out.printf("Power consumption elements = %s%n", consumption);
         System.out.printf("Power consumption = %d%n", consumption.value());
     }

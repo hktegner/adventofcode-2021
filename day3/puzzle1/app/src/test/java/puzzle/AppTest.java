@@ -7,26 +7,32 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import javax.swing.text.Position;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AppTest {
 
-    public static Stream<Arguments> findPowerConsumptionData() {
+    public static Stream<Arguments> findLifeSupportRatingData() {
         return Stream.of(
-                Arguments.of("/test_input_all_zeroes_0.txt", 0),
-                Arguments.of("/test_input_3x3_10.txt", 10)
+                Arguments.of("/test_input_all_zeroes_0_0.txt", 0, 0),
+                Arguments.of("/test_input_all_ones_7_7.txt", 7, 7),
+                Arguments.of("/test_input_puzzle_sample_23_10.txt", 23, 10)
         );
     }
 
     @ParameterizedTest
-    @MethodSource("findPowerConsumptionData")
-    void findPowerConsumption(String resourceName, int expectedPowerConsumption) {
+    @MethodSource("findLifeSupportRatingData")
+    void findLifeSupportRating(
+            String resourceName,
+            int expectedO2GenRating,
+            int expectedCO2ScubRating) {
+
         var app = new App();
-        var actualPowerConsumption = app.findPowerConsumption(resourceName);
-        assertEquals(expectedPowerConsumption, actualPowerConsumption.value(), actualPowerConsumption.toString());
+        var actualLifeSupportRating = app.findLifeSupportRating(resourceName);
+        assertEquals(expectedO2GenRating, actualLifeSupportRating.o2GenRating().value());
+        assertEquals(expectedCO2ScubRating, actualLifeSupportRating.co2ScrubRating().value());
+        assertEquals(expectedO2GenRating * expectedCO2ScubRating, actualLifeSupportRating.value());
     }
 
 }
