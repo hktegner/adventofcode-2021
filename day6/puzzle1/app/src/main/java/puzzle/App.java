@@ -3,21 +3,20 @@
  */
 package puzzle;
 
-import java.util.List;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class App {
 
     public static void main(String[] args) {
-        List<String> lineDescriptors = AppUtil.linesFromResource("input.txt");
-        List<Line> lines = lineDescriptors.stream().map(Line::from).collect(Collectors.toList());
-        var map = new Map(1000, 1000);
-        lines
+        var spawnTimerCsv = AppUtil.resourceAsString("input.txt");
+        var spawnTimers = Arrays.asList(spawnTimerCsv.split(","))
                 .stream()
-                .filter(Line::isStraight)
-                .forEach(l -> l.markOnMap(map));
-        System.out.printf("Locations with more than two vents: %d%n",
-                map.count(vents -> vents > 1));
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+        var simulation = new Simulation(spawnTimers);
+        simulation.runFor(80);
+        System.out.printf("After 80 days, there are %d lanternfish%n", simulation.fishCount());
     }
 
 }

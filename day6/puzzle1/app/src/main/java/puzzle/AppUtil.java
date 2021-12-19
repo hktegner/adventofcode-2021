@@ -9,6 +9,19 @@ import java.util.List;
 
 public final class AppUtil {
 
+    static String resourceAsString(String resourceName) {
+        var input = AppUtil.class.getClassLoader().getResourceAsStream(resourceName);
+        if (input == null) {
+            throw new IllegalArgumentException("Could not load resource " + resourceName);
+        }
+        try (input) {
+            var bytes = input.readAllBytes();
+            return new String(bytes);
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to read resource " + resourceName, e);
+        }
+    }
+
     static List<String> linesFromResource(String resourceName) {
         var input = AppUtil.class.getClassLoader().getResourceAsStream(resourceName);
         if (input == null) {
