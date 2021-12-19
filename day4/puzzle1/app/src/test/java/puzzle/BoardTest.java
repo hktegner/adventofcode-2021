@@ -84,8 +84,8 @@ class BoardTest {
                 "21 22 23 24 25"
         );
         IntStream.range(6,26).forEach(board::mark);
-        assertEquals(25, board.getLastMarked());
-        assertEquals(15, board.totalUnmarkedNumbers());
+        assertEquals(10, board.getLastMarked());
+        assertEquals(285, board.totalUnmarkedNumbers());
     }
 
     @Test

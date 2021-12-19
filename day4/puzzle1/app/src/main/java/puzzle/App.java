@@ -3,31 +3,50 @@
  */
 package puzzle;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class App {
 
     /**
      * Reset boards. Play game of Bingo, until a board wins, or
      * until no more numbers to play.
+     *
      * @return winning board or null
      */
-    public Optional<Board> playGame(String resourceName) {
+    public Optional<Board> playToFindFirst(String resourceName) {
         var game = Game.from(resourceName);
-        return game.play();
+        return game.findFirstWinner();
+    }
+
+    /**
+     * Reset boards. Play game of Bingo, until a board wins, or
+     * until no more numbers to play.
+     *
+     * @return winning board or null
+     */
+    public Optional<Board> playToFindLast(String resourceName) {
+        var game = Game.from(resourceName);
+        return game.findLastWinner();
     }
 
     public static void main(String[] args) {
-        var maybeBoard = new App().playGame("input.txt");
+        findFirstWinner();
+        findLastWinner();
+    }
+
+    private static void findFirstWinner() {
+        var maybeBoard = new App().playToFindFirst("input.txt");
+        reportWinner("First", maybeBoard);
+    }
+
+    private static void findLastWinner() {
+        var maybeBoard = new App().playToFindLast("input.txt");
+        reportWinner("Last", maybeBoard);
+    }
+
+    private static void reportWinner(String description, Optional<Board> maybeBoard) {
         if (maybeBoard.isPresent()) {
-            System.out.printf("Winning board: %n%s%n", maybeBoard.get());
+            System.out.printf("%s winning board: %n%s%n", description, maybeBoard.get());
             System.out.printf("- unmarked numbers total: %d%n", maybeBoard.get().totalUnmarkedNumbers());
             System.out.printf("- last number called: %d%n", maybeBoard.get().getLastMarked());
             System.out.printf("- board score: %d%n",

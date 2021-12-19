@@ -51,13 +51,14 @@ public class Game {
     /**
      * Plays the game of Bingo, drawing numbers according to the draw order,
      * until one board has a complete row or column.
+     *
      * @return the winning board if there was a winner
      */
-    public Optional<Board> play() {
+    public Optional<Board> findFirstWinner() {
         boards.forEach(Board::reset);
 
         for (var number : drawOrder) {
-            for (var board: boards) {
+            for (var board : boards) {
                 board.mark(number);
                 if (board.isAnyLineMarked()) {
                     return Optional.of(board);
@@ -67,5 +68,33 @@ public class Game {
 
         // Nobody one, all numbers played.
         return Optional.empty();
+    }
+
+    /**
+     * Plays the game of Bingo, drawing numbers according to the draw order,
+     * until one board has a complete row or column.
+     *
+     * @return the winning board if there was a winner
+     */
+    public Optional<Board> findLastWinner() {
+        boards.forEach(Board::reset);
+
+        Board lastWinner = null;
+
+        for (var number : drawOrder) {
+            for (var board : boards) {
+                // Skip boards that are already complete
+                if (board.isComplete()) {
+                    continue;
+                }
+                board.mark(number);
+                if (board.isComplete()) {
+                    lastWinner = board;
+                }
+            }
+        }
+
+        // Nobody one, all numbers played.
+        return lastWinner != null ? Optional.of(lastWinner) : Optional.empty();
     }
 }

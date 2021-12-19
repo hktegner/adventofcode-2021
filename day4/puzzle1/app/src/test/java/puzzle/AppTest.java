@@ -9,7 +9,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class AppTest {
 
@@ -25,13 +27,38 @@ class AppTest {
     @MethodSource("playGameData")
     void playGame(String resourceName, int expectedWinningBoard, int expectedLastNumber) {
         var app = new App();
-        var maybeWinningBoard = app.playGame(resourceName);
+        var maybeWinningBoard = app.playToFindFirst(resourceName);
 
         if (maybeWinningBoard.isPresent()) {
             assertEquals(expectedWinningBoard, maybeWinningBoard.get().index());
             assertEquals(expectedLastNumber, maybeWinningBoard.get().getLastMarked());
         } else {
             assertEquals(-1, expectedWinningBoard);
+        }
+    }
+
+    public static Stream<Arguments> findLastWinnerData() {
+        return Stream.of(
+                Arguments.of("test_input_board1_wins_in_5_on_5.txt", 0, 310, 5),
+                Arguments.of("test_input_puzzle_sample_23_10.txt", 1, 148, 13)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("findLastWinnerData")
+    void findLastWinner(String resourceName, int winningBoardIndex, int expectedUnmarkedTotal, int expectedLastMarked) {
+        var app = new App();
+        var maybeWinningBoard = app.playToFindLast(resourceName);
+
+        if (maybeWinningBoard.isPresent()) {
+            var board = maybeWinningBoard.get();
+            assertAll(
+                    () -> assertEquals(winningBoardIndex, board.index(), board.toString()),
+                    () -> assertEquals(expectedUnmarkedTotal, board.totalUnmarkedNumbers(), board.toString()),
+                    () -> assertEquals(expectedLastMarked, board.getLastMarked(), board.toString())
+            );
+        } else {
+            fail("Expected there to be a winner");
         }
     }
 
