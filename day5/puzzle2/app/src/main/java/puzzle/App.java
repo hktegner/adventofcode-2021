@@ -12,10 +12,7 @@ public class App {
         List<String> lineDescriptors = AppUtil.linesFromResource("input.txt");
         List<Line> lines = lineDescriptors.stream().map(Line::from).collect(Collectors.toList());
         var map = new Map(1000, 1000);
-        lines
-                .stream()
-                .filter(Line::isStraight)
-                .forEach(l -> l.markOnMap(map));
+        lines.forEach(l -> l.markOnMap(map));
         System.out.printf("Locations with more than two vents: %d%n",
                 map.count(vents -> vents > 1));
     }
