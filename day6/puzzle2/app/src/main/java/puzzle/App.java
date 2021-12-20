@@ -10,14 +10,13 @@ public class App {
 
     public static void main(String[] args) {
         var spawnTimerCsv = AppUtil.resourceAsString("input.txt");
-        var spawnTimers = Arrays.asList(spawnTimerCsv.split(","))
-                .stream()
+        var spawnTimers = Arrays.stream(spawnTimerCsv.split(","))
                 .map(Integer::parseInt)
-                .map(i -> (byte)i.intValue())
                 .collect(Collectors.toList());
         var simulation = new Simulation(spawnTimers);
-        simulation.runFor(256);
-        System.out.printf("After 80 days, there are %d lanternfish%n", simulation.fishCount());
+        var days = 256;
+        simulation.runFor(days);
+        System.out.printf("After %d days, there are %d lanternfish%n", days, simulation.fishCount());
     }
 
 }
