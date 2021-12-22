@@ -3,39 +3,30 @@
  */
 package puzzle;
 
-import java.util.Arrays;
-import java.util.function.Predicate;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class App {
 
+    private final List<Line> lines;
+
     public static void main(String[] args) {
-        System.out.printf("Cheapest alignment position: %s%n", findCheapestAlignmentPosition("input.txt"));
+        var app = new App("input.txt");
+        System.out.printf("Known display digits: %d%n", app.knownDisplayDigits());
     }
 
-    public static CheapestPosition findCheapestAlignmentPosition(String resourceName) {
-        var rawInput = AppUtil.resourceAsString(resourceName);
-        var crabPositions =
-                Arrays.stream(rawInput.split(","))
-                .map(String::trim)
-                .filter(Predicate.not(String::isBlank))
-                .map(Integer::parseInt)
+    public App(String resourceName) {
+        lines = AppUtil.linesFromResource(resourceName)
+                .stream()
+                .map(Line::new)
                 .collect(Collectors.toList());
-        var crabs = new Crabs(crabPositions);
-        return findCheapestAlignmentPosition(crabs);
     }
 
-    private static CheapestPosition findCheapestAlignmentPosition(Crabs crabs) {
-        var cheapestCost = -1;
-        var cheapestPosition = -1;
-        for (var alignmentPosition = crabs.minPosition();
-             alignmentPosition <= crabs.maxPosition(); alignmentPosition++) {
-            var cost = crabs.fuelToAlignAt(alignmentPosition);
-            if (cost < cheapestCost || cheapestCost == -1) {
-                cheapestCost = cost;
-                cheapestPosition = alignmentPosition;
-            }
-        }
-        return new CheapestPosition(cheapestPosition, cheapestCost);
+    public int knownDisplayDigits() {
+        return lines
+                .stream()
+                .map(Line::knownDisplayDigits)
+                .reduce(Integer::sum).orElse(0);
     }
+
 }

@@ -3,8 +3,6 @@
  */
 package puzzle;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -18,8 +16,8 @@ class AppTest {
 
     public static Stream<Arguments> data() {
         return Stream.of(
-                Arguments.of("test_input_puzzle_sample_mincost_37.txt", 2, 37),
-                Arguments.of("test_input_three_crabs_mincost_2.txt", 2, 2)
+                Arguments.of("test_input_puzzle_sample_mincost_5_168.txt", 5, 168),
+                Arguments.of("test_input_three_crabs_mincost_2_2.txt", 2, 2)
         );
     }
 

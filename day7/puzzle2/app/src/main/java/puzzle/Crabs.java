@@ -2,6 +2,7 @@ package puzzle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class Crabs {
 
@@ -30,10 +31,20 @@ public class Crabs {
     public int fuelToAlignAt(int alignmentPosition) {
         return crabPositions
                 .stream()
-                .map(pos -> Math.max(pos, alignmentPosition)
-                        - Math.min(pos, alignmentPosition))
+                .map(pos -> cost(pos, alignmentPosition))
                 .reduce(Integer::sum)
                 .orElse(0);
+    }
+
+     public static int cost(int p1, int p2) {
+        var min = Math.min(p1, p2);
+        var max = Math.max(p1, p2);
+        var diff = max-min;
+        if (diff == 0) {
+            return 0;
+        }
+        return IntStream.rangeClosed(1, diff)
+                .sum();
     }
 
     public List<Integer> getCrabPositions() {

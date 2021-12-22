@@ -3,8 +3,6 @@
  */
 package puzzle;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -12,24 +10,20 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class AppTest {
 
     public static Stream<Arguments> data() {
         return Stream.of(
-                Arguments.of("test_input_puzzle_sample_mincost_37.txt", 2, 37),
-                Arguments.of("test_input_three_crabs_mincost_2.txt", 2, 2)
+                Arguments.of("test_input_single_line_2.txt", 2),
+                Arguments.of("test_input_two_lines_5.txt", 5)
         );
     }
 
     @ParameterizedTest
     @MethodSource("data")
-    void findCheapestAlignmentPosition(String resourceName, int expectedPosition, int expectedMinCost) {
-        var cheapestPosition = App.findCheapestAlignmentPosition(resourceName);
-        assertNotNull(cheapestPosition);
-        assertEquals(expectedPosition, cheapestPosition.position());
-        assertEquals(expectedMinCost, cheapestPosition.cost());
+    void knownDisplayDigits(String resourceName, int expectedDigits) {
+        assertEquals(expectedDigits, new App(resourceName).knownDisplayDigits());
     }
 
 }

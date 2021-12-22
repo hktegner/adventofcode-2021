@@ -9,6 +9,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class CrabsTest {
 
     @Test
+    void cost() {
+        assertEquals(1, Crabs.cost(1,2));
+        assertEquals(1, Crabs.cost(2,1));
+
+        assertEquals(3, Crabs.cost(1,3));
+        assertEquals(3, Crabs.cost(3,1));
+    }
+
+    @Test
     void fuelToAlignAt() {
         var crabs = new Crabs(List.of(1,2,3));
         assertEquals(3, crabs.fuelToAlignAt(1));
