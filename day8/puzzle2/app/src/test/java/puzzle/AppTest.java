@@ -3,6 +3,7 @@
  */
 package puzzle;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -24,6 +25,12 @@ class AppTest {
     @MethodSource("data")
     void knownDisplayDigits(String resourceName, int expectedDigits) {
         assertEquals(expectedDigits, new App(resourceName).knownDisplayDigits());
+    }
+
+    @Test
+    void displayValueTotal() {
+        var app = new App("test_input_sample_61229.txt");
+        assertEquals(61229, app.displayValueTotal());
     }
 
 }

@@ -8,12 +8,12 @@ import java.util.stream.Collectors;
 
 public class App {
 
-    private final List<Line> lines;
-
     public static void main(String[] args) {
         var app = new App("input.txt");
-        System.out.printf("Known display digits: %d%n", app.knownDisplayDigits());
+        System.out.printf("Sum of all display values: %d%n", app.displayValueTotal());
     }
+
+    private final List<Line> lines;
 
     public App(String resourceName) {
         lines = AppUtil.linesFromResource(resourceName)
@@ -29,4 +29,10 @@ public class App {
                 .reduce(Integer::sum).orElse(0);
     }
 
+    public int displayValueTotal() {
+        return lines
+                .stream()
+                .mapToInt(Line::displayValue)
+                .sum();
+    }
 }
