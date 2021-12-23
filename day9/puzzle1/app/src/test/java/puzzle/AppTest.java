@@ -3,27 +3,20 @@
  */
 package puzzle;
 
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.stream.Stream;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AppTest {
 
-    public static Stream<Arguments> data() {
-        return Stream.of(
-                Arguments.of("test_input_single_line_2.txt", 2),
-                Arguments.of("test_input_two_lines_5.txt", 5)
-        );
+    @Test
+    void totalRiskOfLowPoints() {
+        assertEquals(15, new App("test_input_sample_15.txt").totalRiskOfLowPoints());
     }
 
-    @ParameterizedTest
-    @MethodSource("data")
-    void knownDisplayDigits(String resourceName, int expectedDigits) {
-        assertEquals(expectedDigits, new App(resourceName).knownDisplayDigits());
+    @Test
+    void productOfThreeBiggestBasins() {
+        assertEquals(1134, new App("test_input_sample_15.txt").productOfThreeBiggestBasins());
     }
 
 }
