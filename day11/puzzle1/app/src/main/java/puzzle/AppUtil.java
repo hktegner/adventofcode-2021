@@ -4,10 +4,19 @@ import java.io.IOException;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public final class AppUtil {
+
+    static List<Integer> toIntList(String singleDigitNumbers) {
+        var numbers = new ArrayList<Integer>();
+        for (char ch : singleDigitNumbers.toCharArray()) {
+            numbers.add(Character.digit(ch, 10));
+        }
+        return numbers;
+    }
 
     static String resourceAsString(String resourceName) {
         var input = AppUtil.class.getClassLoader().getResourceAsStream(resourceName);
