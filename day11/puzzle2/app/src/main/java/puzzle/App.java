@@ -10,9 +10,6 @@ public class App {
 
   public static void main(String[] args) {
     var app = new App("input.txt");
-    var steps = 100;
-//    System.out.printf("After %d steps, there have been %d flashes%n",
-//        steps, app.getFlashesInSteps(steps));
     System.out.printf("After %d steps, all octopuses flashed", app.firstStepWhenAllFlash());
   }
 
