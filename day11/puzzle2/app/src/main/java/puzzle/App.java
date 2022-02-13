@@ -24,10 +24,6 @@ public class App {
     evolver = new OctopusEvolver(map);
   }
 
-  public int getFlashesInSteps(int evolveSteps) {
-    return evolver.evolveSteps(evolveSteps);
-  }
-
   public int firstStepWhenAllFlash() {
     var steps = 0;
     while (evolver.countFlashed() != 100) {
